@@ -55,7 +55,7 @@ function AnimatedNumber({ value, duration = 600 }: { value: number; duration?: n
             else prev.current = value;
         };
         requestAnimationFrame(step);
-    }, [value]);
+    }, [value, duration]);
     return <>{display.toLocaleString()}</>;
 }
 
@@ -180,8 +180,8 @@ function RealtimePanel() {
                         </div>
                         <p className="text-[11px] text-white/60 font-semibold mt-0.5">
                             Tracking all pages on{" "}
-                            <a href={FRONTEND_URL} target="_blank" className="text-[#4ade80] hover:underline font-bold">{FRONTEND_URL}/**</a>
-                            {" "}· auto-refresh every 10s
+                            <a href={FRONTEND_URL} target="_blank" className="text-[#4ade80] hover:underline font-bold">{FRONTEND_URL}{"/**"}</a>
+                            {" · auto-refresh every 10s"}
                         </p>
                     </div>
                 </div>
@@ -446,7 +446,7 @@ function RealtimePanel() {
             {/* ── FOOTER ── */}
             <div className="px-5 py-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between">
                 <span className="text-[10px] text-slate-400 font-semibold">
-                    Tracking: all subpaths of <code className="font-mono text-emerald-600 dark:text-emerald-400">{FRONTEND_URL}/**</code> · Platform admins excluded
+                    <span>Tracking: all subpaths of <code className="font-mono text-emerald-600 dark:text-emerald-400">{FRONTEND_URL}{"/**"}</code>{" · Platform admins excluded"}</span>
                 </span>
                 <span className="text-[10px] text-slate-400 font-bold flex items-center gap-1">
                     <Clock className="h-3 w-3" /> {asOf}
