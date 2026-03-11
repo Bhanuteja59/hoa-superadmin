@@ -22,7 +22,7 @@ import {
 } from "recharts";
 import { Label } from "@/components/ui/label";
 
-const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || "http://localhost:3000";
+const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL || "https://hoa-frontend-2-0.vercel.app";
 
 function Skeleton({ className = "" }: { className?: string }) {
     return <div className={`animate-pulse rounded-xl bg-slate-200 dark:bg-slate-700 ${className}`} />;
