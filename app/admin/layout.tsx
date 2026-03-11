@@ -272,9 +272,34 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [notificationsOpen, setNotificationsOpen] = useState(false);
     const { theme, toggle, mounted } = useAdminTheme();
+    const { data: session, status }: any = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (mounted && status === "unauthenticated") {
+            router.replace("/login");
+        } else if (mounted && status === "authenticated" && !session?.user?.isPlatformAdmin) {
+            router.replace("/login?error=access_denied");
+        }
+    }, [status, mounted, session, router]);
 
     // Force dark vars on server/first-render to match server stream
     const vars = (mounted && theme === "dark") ? DARK_VARS : LIGHT_VARS;
+
+    if (!mounted || status === "loading") {
+        return (
+            <div className="h-screen w-full flex items-center justify-center bg-[#0a0a0f] text-violet-500">
+                <div className="flex flex-col items-center gap-4">
+                    <Activity className="h-10 w-10 animate-pulse" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] opacity-50">Link Establishing...</span>
+                </div>
+            </div>
+        );
+    }
+
+    if (status === "unauthenticated" || (status === "authenticated" && !session?.user?.isPlatformAdmin)) {
+        return null; // Redirecting...
+    }
 
     const dummyNotifications = [
         { id: 1, title: "New Community Request", text: "Oakwood Estates is requesting platform access.", time: "2m ago", icon: Info, color: "text-blue-400" },
