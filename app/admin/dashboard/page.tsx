@@ -91,7 +91,7 @@ function CommunityRow({ t }: { t: any }) {
             <div className="flex items-center gap-3 shrink-0 ml-3">
                 <div className="hidden sm:flex items-center gap-2">
                     <span className="flex items-center gap-1 text-xs text-slate-500"><Users className="h-3 w-3" /> {t.users || 0}</span>
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-black ${t.status === "ACTIVE" ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : "bg-amber-500/10 text-amber-600"}`}>{t.status}</span>
+                    <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black shadow-sm ${t.status === "ACTIVE" ? "bg-emerald-600 text-white" : "bg-amber-600 text-white"}`}>{t.status}</span>
                 </div>
                 <Link href={`/admin/tenants/${t.id}`} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-600 text-white text-[11px] font-black uppercase hover:bg-violet-500 transition-all active:scale-95 shadow-sm shadow-violet-500/20">
                     <Settings className="h-3 w-3" /> Manage
@@ -176,7 +176,7 @@ function RealtimePanel() {
                     <div>
                         <div className="flex items-center gap-2">
                             <h2 className="text-base font-black text-white tracking-tight">Real-Time</h2>
-                            <span className="text-[10px] font-black uppercase tracking-widest bg-[#22c55e]/20 text-[#4ade80] border border-[#22c55e]/30 px-2 py-0.5 rounded-full">LIVE</span>
+                            <span className="text-[10px] font-black uppercase tracking-widest bg-[#22c55e] text-white border border-[#22c55e]/30 px-2.5 py-1 rounded-lg shadow-sm">LIVE</span>
                         </div>
                         <p className="text-[11px] text-white/60 font-semibold mt-0.5">
                             Tracking all pages on{" "}
@@ -212,9 +212,9 @@ function RealtimePanel() {
                         )}
                     </div>
                     <p className="text-xs text-slate-400 font-medium mt-2 text-center">in the last 5 minutes</p>
-                    <div className="flex items-center gap-1.5 mt-3 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                        <Wifi className="h-3 w-3 text-emerald-500" />
-                        <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Live</span>
+                    <div className="flex items-center gap-1.5 mt-4 px-3.5 py-1.5 rounded-xl bg-emerald-600 border border-emerald-500/50 shadow-[0_4px_12px_rgba(16,185,129,0.3)]">
+                        <Wifi className="h-3.5 w-3.5 text-white" />
+                        <span className="text-[11px] font-black text-white uppercase tracking-widest">Live Connect</span>
                     </div>
                 </div>
 
@@ -912,7 +912,7 @@ export default function AdminDashboardPage() {
                             <h3 className="text-base font-black text-slate-900 dark:text-white">Community Registry</h3>
                             <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-2">
                                 All provisioned tenant environments
-                                {newThisWeek > 0 && <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-black">+{newThisWeek} new this week</span>}
+                                {newThisWeek > 0 && <span className="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[10px] font-black shadow-sm">+{newThisWeek} NEW THIS WEEK</span>}
                             </p>
                         </div>
                         <div className="relative w-full sm:w-56">
