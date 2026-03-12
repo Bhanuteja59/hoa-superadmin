@@ -48,11 +48,11 @@ export default function AllUsersPage() {
                         </p>
                     </div>
                     <div className="flex gap-3">
-                        <div className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-semibold text-white">
-                            <Users className="h-3.5 w-3.5" /> {data.length} Total
+                        <div className="flex items-center gap-2 text-[13px] px-4 py-2 rounded-xl bg-blue-600 text-white font-black shadow-[0_8px_16px_rgba(37,99,235,0.3)] border border-blue-500/50">
+                            <Users className="h-4 w-4 text-blue-100" /> {data.length} Total
                         </div>
-                        <div className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-400 font-semibold text-white">
-                            <Shield className="h-3.5 w-3.5" /> {adminCount} Admins
+                        <div className="flex items-center gap-2 text-[13px] px-4 py-2 rounded-xl bg-violet-600 text-white font-black shadow-[0_8px_16px_rgba(124,58,237,0.3)] border border-violet-500/50">
+                            <Shield className="h-4 w-4 text-violet-100" /> {adminCount} Admins
                         </div>
                     </div>
                 </div>

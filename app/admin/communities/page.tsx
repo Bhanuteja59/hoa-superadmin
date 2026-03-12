@@ -58,11 +58,11 @@ export default function AllCommunitiesPage() {
                         </p>
                     </div>
                     <div className="flex gap-3">
-                        <div className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold">
-                            <CheckCircle className="h-3.5 w-3.5" /> {activeCount} Active
+                        <div className="flex items-center gap-2 text-[13px] px-4 py-2 rounded-xl bg-emerald-600 text-white font-black shadow-[0_8px_16px_rgba(16,185,129,0.3)] border border-emerald-500/50">
+                            <CheckCircle className="h-4 w-4 text-emerald-100" /> {activeCount} Active
                         </div>
-                        <div className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 font-semibold">
-                            <XCircle className="h-3.5 w-3.5" /> {inactiveCount} Inactive
+                        <div className="flex items-center gap-2 text-[13px] px-4 py-2 rounded-xl bg-amber-600 text-white font-black shadow-[0_8px_16px_rgba(245,158,11,0.3)] border border-amber-500/50">
+                            <XCircle className="h-4 w-4 text-amber-100" /> {inactiveCount} Inactive
                         </div>
                     </div>
                 </div>

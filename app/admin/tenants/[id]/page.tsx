@@ -99,7 +99,7 @@ export default function TenantDetailPage() {
                         <div>
                             <h1 className="text-3xl font-black admin-text tracking-tight">{tenant.name}</h1>
                             <div className="flex items-center gap-3 mt-1.5">
-                                <span className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest border ${tenant.status === 'ACTIVE' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-amber-500/10 text-amber-500 border-amber-500/20'}`}>
+                                <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-sm ${tenant.status === 'ACTIVE' ? 'bg-emerald-600 text-white' : 'bg-amber-600 text-white'}`}>
                                     {tenant.status}
                                 </span>
                                 <span className="text-xs admin-muted flex items-center gap-1 font-mono">
@@ -260,8 +260,8 @@ export default function TenantDetailPage() {
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4">
-                                                    <span className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full border ${user.role === 'ADMIN' ? 'bg-violet-500/10 text-violet-500 border-violet-500/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'}`}>
-                                                        {user.role === 'ADMIN' ? <Shield className="h-3 w-3" /> : <Users className="h-3 w-3" />}
+                                                    <span className={`inline-flex items-center gap-1.5 text-[11px] font-black px-2.5 py-1 rounded-lg shadow-sm ${user.role === 'ADMIN' ? 'bg-violet-600 text-white' : 'bg-emerald-600 text-white'}`}>
+                                                        {user.role === 'ADMIN' ? <Shield className="h-3 w-3 text-violet-100" /> : <Users className="h-3 w-3 text-emerald-100" />}
                                                         {user.role}
                                                     </span>
                                                 </td>

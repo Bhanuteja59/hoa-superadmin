@@ -45,11 +45,11 @@ export default function AllBuildingsPage() {
                         </p>
                     </div>
                     <div className="flex gap-3">
-                        <div className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 font-semibold text-white">
-                            <Building2 className="h-3.5 w-3.5" /> {data.length} Buildings
+                        <div className="flex items-center gap-2 text-[13px] px-4 py-2 rounded-xl bg-amber-600 text-white font-black shadow-[0_8px_16px_rgba(245,158,11,0.3)] border border-amber-500/50">
+                            <Building2 className="h-4 w-4 text-amber-100" /> {data.length} Buildings
                         </div>
-                        <div className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-semibold text-white">
-                            <Home className="h-3.5 w-3.5" /> {totalUnits} Units
+                        <div className="flex items-center gap-2 text-[13px] px-4 py-2 rounded-xl bg-blue-600 text-white font-black shadow-[0_8px_16px_rgba(37,99,235,0.3)] border border-blue-500/50">
+                            <Home className="h-4 w-4 text-blue-100" /> {totalUnits} Units
                         </div>
                     </div>
                 </div>
