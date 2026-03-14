@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiGet, apiDelete, apiPutJson } from "@/lib/api";
 import { useParams, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Trash2, Save, ArrowLeft, Building2, Users, Shield, Mail, Calendar, Settings, Activity } from "lucide-react";
+import { Loader2, Trash2, Save, ArrowLeft, Building2, Users, Shield, Mail, Calendar, Settings, Activity, CreditCard } from "lucide-react";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
@@ -27,6 +27,22 @@ export default function TenantDetailPage() {
     const { data: users, isLoading: isLoadingUsers } = useQuery({
         queryKey: ["admin", "tenant", tenantId, "users"],
         queryFn: () => apiGet<any[]>(`/admin/tenants/${tenantId}/users`),
+    });
+
+    const { data: ledgerSummary, isLoading: isLoadingLedgerSummary } = useQuery({
+        queryKey: ["admin", "tenant", tenantId, "ledger-summary"],
+        queryFn: () => apiGet<any[]>(`/admin/tenants/${tenantId}/ledger/summary`),
+        enabled: !!tenantId,
+        refetchInterval: 10000,
+        refetchOnWindowFocus: true,
+    });
+
+    const { data: ledgerHistory, isLoading: isLoadingLedgerHistory } = useQuery({
+        queryKey: ["admin", "tenant", tenantId, "ledger-history"],
+        queryFn: () => apiGet<any[]>(`/admin/tenants/${tenantId}/ledger/history`),
+        enabled: !!tenantId,
+        refetchInterval: 10000,
+        refetchOnWindowFocus: true,
     });
 
     const [isEditing, setIsEditing] = useState(false);
@@ -129,13 +145,16 @@ export default function TenantDetailPage() {
                     <TabsTrigger value="users" className="data-[state=active]:bg-violet-600 data-[state=active]:text-white rounded-lg px-6 py-2 text-xs font-bold transition-all">
                         <Users className="h-3.5 w-3.5 mr-2" /> Personnel Registry
                     </TabsTrigger>
+                    <TabsTrigger value="ledger" className="data-[state=active]:bg-violet-600 data-[state=active]:text-white rounded-lg px-6 py-2 text-xs font-bold transition-all">
+                        <CreditCard className="h-3.5 w-3.5 mr-2" /> Ledger & Payments
+                    </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="overview" className="mt-0 space-y-6">
-                    <div className="grid gap-6 lg:grid-cols-3">
-                        {/* Summary side Card */}
-                        <div className="lg:col-span-1 space-y-6">
-                            <div className="rounded-2xl border admin-border admin-glass p-6 space-y-4">
+                <TabsContent value="overview" className="mt-0">
+                    <div className="grid lg:grid-cols-3 gap-8 items-start">
+                        {/* Sidebar */}
+                        <div className="space-y-6">
+                            <div className="rounded-2xl border admin-border admin-glass p-6 space-y-6">
                                 <h3 className="text-sm font-bold admin-text">Instance Metrics</h3>
                                 <div className="space-y-3">
                                     {[
@@ -292,6 +311,85 @@ export default function TenantDetailPage() {
                                 </table>
                             </div>
                         )}
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="ledger" className="mt-0">
+                    <div className="grid gap-6 lg:grid-cols-3">
+                        <div className="rounded-2xl border admin-border admin-glass p-6 space-y-3">
+                            <h3 className="text-lg font-bold admin-text">Ledger Summary</h3>
+                            <p className="text-xs admin-muted">Live payment tracking for this tenant.</p>
+
+                            {isLoadingLedgerSummary ? (
+                                <div className="space-y-3">
+                                    {[...Array(3)].map((_, i) => <Skeleton key={i} className="h-10" />)}
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="grid gap-3">
+                                        <div className="flex items-center justify-between p-3 rounded-xl bg-admin-surface-2 border admin-border">
+                                            <div>
+                                                <div className="text-xs font-bold admin-muted">Units</div>
+                                                <div className="text-xl font-black admin-text">{ledgerSummary?.length ?? 0}</div>
+                                            </div>
+                                            <div className="text-xs font-semibold text-emerald-600">Live</div>
+                                        </div>
+                                        <div className="flex items-center justify-between p-3 rounded-xl bg-admin-surface-2 border admin-border">
+                                            <div>
+                                                <div className="text-xs font-bold admin-muted">Total Balance</div>
+                                                <div className="text-xl font-black admin-text">${((ledgerSummary?.reduce((sum: number, u: any) => sum + (u.balance_cents ?? 0), 0) ?? 0) / 100).toFixed(2)}</div>
+                                            </div>
+                                            <div className="text-xs font-semibold text-emerald-600">Updated every 10s</div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+
+                        <div className="lg:col-span-2 rounded-2xl border admin-border admin-glass p-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h3 className="text-lg font-bold admin-text">Transaction History</h3>
+                                    <p className="text-xs admin-muted">Recent charges & payments across this tenant.</p>
+                                </div>
+                                <Badge className="text-xs">Auto-refresh</Badge>
+                            </div>
+
+                            {isLoadingLedgerHistory ? (
+                                <div className="space-y-3 mt-6">
+                                    {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-12" />)}
+                                </div>
+                            ) : (
+                                <div className="mt-6 overflow-y-auto max-h-[360px]">
+                                    <table className="w-full text-sm">
+                                        <thead>
+                                            <tr className="text-[10px] uppercase tracking-widest text-slate-400 font-black border-b border-slate-100 dark:border-slate-800">
+                                                <th className="px-5 py-2 text-left">Date</th>
+                                                <th className="px-5 py-2 text-left">Unit</th>
+                                                <th className="px-5 py-2 text-left">Type</th>
+                                                <th className="px-5 py-2 text-right">Amount</th>
+                                                <th className="px-5 py-2 text-left">Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {(ledgerHistory ?? []).slice(0, 50).map((tx: any) => (
+                                                <tr key={tx.id} className="border-b border-slate-50 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                                                    <td className="px-5 py-3 text-xs font-semibold text-slate-500">{new Date(tx.posted_at).toLocaleString()}</td>
+                                                    <td className="px-5 py-3 text-xs text-slate-600">{tx.building_name ? `${tx.building_name} - ` : ""}{tx.unit_number}</td>
+                                                    <td className="px-5 py-3 text-xs font-black uppercase" >
+                                                        <span className={tx.type === "CHARGE" ? "text-rose-600" : "text-emerald-500"}>{tx.type}</span>
+                                                    </td>
+                                                    <td className="px-5 py-3 text-right font-black">
+                                                        ${(tx.amount_cents / 100).toFixed(2)}
+                                                    </td>
+                                                    <td className="px-5 py-3 text-xs text-slate-500 truncate max-w-[250px]">{tx.description}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </TabsContent>
             </Tabs>
