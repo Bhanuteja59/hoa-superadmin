@@ -226,26 +226,36 @@ function RealtimePanel() {
                             <p className="text-[10px] text-slate-400 font-medium mt-0.5">Unique by user ID or IP · Admin excluded</p>
                         </div>
                     </div>
-                    {/* Custom sparkline bars */}
-                    <div className="flex items-end gap-0.5 h-20 w-full">
-                        {rolling.map((r: any, i: number) => {
-                            const h = maxRolling > 0 ? Math.max(4, Math.round((r.visitors / maxRolling) * 100)) : 4;
-                            const isCurrent = i === rolling.length - 1;
-                            return (
-                                <div key={i} className="group relative flex-1 flex flex-col items-center justify-end h-full">
-                                    <div
-                                        className={`w-full rounded-t transition-all duration-300 ${isCurrent ? "bg-emerald-400" : "bg-emerald-600/50 hover:bg-emerald-500/70"}`}
-                                        style={{ height: `${h}%` }}
-                                    />
-                                    {/* Tooltip on hover */}
-                                    <div className="absolute bottom-full mb-1 hidden group-hover:flex flex-col items-center z-10">
-                                        <div className="bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded-lg whitespace-nowrap shadow-xl">
-                                            {r.time} — {r.visitors} visitor{r.visitors !== 1 ? "s" : ""}
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                    {/* Custom floating wave chart */}
+                    <div className="h-24 w-full -mx-2">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={rolling} margin={{ top: 5, right: 10, left: 10, bottom: 0 }}>
+                                <defs>
+                                    <linearGradient id="liveWave" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.5} />
+                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <Tooltip
+                                    cursor={{ stroke: '#10b981', strokeWidth: 1, strokeDasharray: '3 3', opacity: 0.5 }}
+                                    contentStyle={{ backgroundColor: "#1e293b", border: "none", borderRadius: "12px", color: "#fff", fontSize: "11px", fontWeight: "bold", padding: "8px 12px", boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3)" }}
+                                    itemStyle={{ color: "#34d399", padding: 0 }}
+                                    labelStyle={{ color: "#94a3b8", marginBottom: "4px" }}
+                                    formatter={(v: any) => [`${v} active`, "visitors"]}
+                                    labelFormatter={(label) => `Time: ${label}`}
+                                />
+                                <Area 
+                                    type="monotone" 
+                                    dataKey="visitors" 
+                                    stroke="#10b981" 
+                                    strokeWidth={3}
+                                    fill="url(#liveWave)"
+                                    animationDuration={1500}
+                                    animationEasing="ease-in-out"
+                                    activeDot={{ r: 6, fill: "#10b981", stroke: "#fff", strokeWidth: 2 }}
+                                />
+                            </AreaChart>
+                        </ResponsiveContainer>
                     </div>
                     <div className="flex justify-between mt-1 text-[9px] text-slate-400 font-bold">
                         <span>{rolling[0]?.time}</span>
@@ -656,6 +666,12 @@ export default function AdminDashboardPage() {
         refetchInterval: 30_000,
         staleTime: 20_000,
     });
+    const { data: healthData, isLoading: isHealthLoading } = useQuery({
+        queryKey: ["admin", "stats", "health"],
+        queryFn: () => apiGet<any>("/platform/stats/health"),
+        refetchInterval: 30_000,
+        staleTime: 20_000,
+    });
     const { data: detailedData, isLoading: isDetailedLoading } = useQuery({
         queryKey: ["admin", "stats", "detailed"],
         queryFn: () => apiGet<any>("/platform/stats/detailed"),
@@ -880,10 +896,11 @@ export default function AdminDashboardPage() {
                     </div>
                     <div className="space-y-3">
                         {[
-                            { label: "API Gateway", status: "Operational", ok: true },
-                            { label: "Database", status: statsData ? "Operational" : "Checking…", ok: !!statsData },
-                            { label: "Auth Service", status: "Operational", ok: true },
-                            { label: "File Storage", status: "Operational", ok: true },
+                            { label: "API Gateway", status: healthData?.api || "Checking…", ok: healthData?.api_ok ?? false },
+                            { label: "Database", status: healthData?.database || "Checking…", ok: healthData?.database_ok ?? false },
+                            { label: "Auth Service", status: healthData?.auth || "Checking…", ok: healthData?.auth_ok ?? false },
+                            { label: "File Storage", status: healthData?.storage || "Checking…", ok: healthData?.storage_ok ?? false },
+                            { label: "AI Vector DB", status: healthData?.qdrant || "Checking…", ok: healthData?.qdrant_ok ?? false },
                             { label: "Communities", status: statsData ? `${statsData.active_communities ?? 0} active` : "Checking…", ok: !!statsData && statsData.active_communities > 0 },
                             { label: "Frontend App", status: "Running", ok: true },
                         ].map((s) => (
