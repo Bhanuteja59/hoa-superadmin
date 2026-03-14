@@ -300,58 +300,60 @@ function RealtimePanel() {
                             </div>
                         ) : (
                             <div className="overflow-x-auto">
-                                <table className="w-full text-sm">
-                                    <thead>
-                                        <tr className="text-[10px] uppercase tracking-widest text-slate-400 font-black border-b border-slate-100 dark:border-slate-800">
-                                            <th className="px-5 py-2.5 text-left">#</th>
-                                            <th className="px-5 py-2.5 text-left">Page Path</th>
-                                            <th className="px-5 py-2.5 text-right">Unique Visitors</th>
-                                            <th className="px-5 py-2.5 text-right">Total Views</th>
-                                            <th className="px-5 py-2.5 w-40">Distribution</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {topPages.map((p: any, i: number) => {
-                                            const pct = Math.round((p.unique_visitors / maxPage) * 100);
-                                            return (
-                                                <tr key={i} className="border-b border-slate-50 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
-                                                    <td className="px-5 py-3">
-                                                        <span className="text-[10px] font-black text-slate-300 dark:text-slate-600">#{i + 1}</span>
-                                                    </td>
-                                                    <td className="px-5 py-3 max-w-xs">
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="flex h-5 w-5 rounded bg-emerald-500/10 items-center justify-center shrink-0">
-                                                                <Hash className="h-2.5 w-2.5 text-emerald-500" />
-                                                            </span>
-                                                            <a
-                                                                href={`${FRONTEND_URL}${p.path}`}
-                                                                target="_blank"
-                                                                className="font-mono text-[12px] font-bold text-slate-700 dark:text-slate-200 truncate hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors group-hover:underline decoration-dashed underline-offset-2"
-                                                            >
-                                                                {p.path}
-                                                            </a>
-                                                            <ExternalLink className="h-3 w-3 text-slate-300 opacity-0 group-hover:opacity-100 shrink-0" />
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-5 py-3 text-right">
-                                                        <span className="text-sm font-black text-emerald-600 dark:text-emerald-400">{p.unique_visitors.toLocaleString()}</span>
-                                                    </td>
-                                                    <td className="px-5 py-3 text-right">
-                                                        <span className="text-sm font-bold text-slate-500 dark:text-slate-400">{p.views.toLocaleString()}</span>
-                                                    </td>
-                                                    <td className="px-5 py-3">
-                                                        <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                                                            <div
-                                                                className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-700"
-                                                                style={{ width: `${pct}%` }}
-                                                            />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
+                                <div className="max-h-[340px] overflow-y-auto">
+                                    <table className="w-full text-sm">
+                                        <thead>
+                                            <tr className="text-[10px] uppercase tracking-widest text-slate-400 font-black border-b border-slate-100 dark:border-slate-800">
+                                                <th className="px-5 py-2.5 text-left">#</th>
+                                                <th className="px-5 py-2.5 text-left">Page Path</th>
+                                                <th className="px-5 py-2.5 text-right">Unique Visitors</th>
+                                                <th className="px-5 py-2.5 text-right">Total Views</th>
+                                                <th className="px-5 py-2.5 w-40">Distribution</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {topPages.map((p: any, i: number) => {
+                                                const pct = Math.round((p.unique_visitors / maxPage) * 100);
+                                                return (
+                                                    <tr key={i} className="border-b border-slate-50 dark:border-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors group">
+                                                        <td className="px-5 py-3">
+                                                            <span className="text-[10px] font-black text-slate-300 dark:text-slate-600">#{i + 1}</span>
+                                                        </td>
+                                                        <td className="px-5 py-3 max-w-xs">
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="flex h-5 w-5 rounded bg-emerald-500/10 items-center justify-center shrink-0">
+                                                                    <Hash className="h-2.5 w-2.5 text-emerald-500" />
+                                                                </span>
+                                                                <a
+                                                                    href={`${FRONTEND_URL}${p.path}`}
+                                                                    target="_blank"
+                                                                    className="font-mono text-[12px] font-bold text-slate-700 dark:text-slate-200 truncate hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors group-hover:underline decoration-dashed underline-offset-2"
+                                                                >
+                                                                    {p.path}
+                                                                </a>
+                                                                <ExternalLink className="h-3 w-3 text-slate-300 opacity-0 group-hover:opacity-100 shrink-0" />
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-5 py-3 text-right">
+                                                            <span className="text-sm font-black text-emerald-600 dark:text-emerald-400">{p.unique_visitors.toLocaleString()}</span>
+                                                        </td>
+                                                        <td className="px-5 py-3 text-right">
+                                                            <span className="text-sm font-bold text-slate-500 dark:text-slate-400">{p.views.toLocaleString()}</span>
+                                                        </td>
+                                                        <td className="px-5 py-3">
+                                                            <div className="h-1.5 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                                                                <div
+                                                                    className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-700"
+                                                                    style={{ width: `${pct}%` }}
+                                                                />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         )}
                     </div>

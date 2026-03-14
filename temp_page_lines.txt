@@ -1,0 +1,46 @@
+﻿75:         }
+76:     });
+77: 
+78:     const deleteUser = useMutation({
+79:         mutationFn: async (userId: string) => apiDelete(`/admin/tenants/${tenantId}/users/${userId}`),
+80:         onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "tenant", tenantId, "users"] })
+81:     });
+82: 
+83:     if (isLoadingTenant) {
+84:         return (
+85:             <div className="p-8 flex flex-col items-center justify-center min-h-[60vh] gap-4">
+86:                 <Loader2 className="h-10 w-10 text-violet-500 animate-spin" />
+87:                 <p className="admin-muted text-sm font-medium animate-pulse">Initializing cluster contextâ€¦</p>
+88:             </div>
+89:         );
+90:     }
+91: 
+92:     if (!tenant) {
+93:         return (
+94:             <div className="p-20 text-center space-y-4">
+95:                 <div className="text-4xl">ðŸ›¸</div>
+96:                 <h1 className="text-2xl font-black admin-text">Cluster Not Found</h1>
+97:                 <p className="admin-muted max-w-xs mx-auto text-sm">The requested tenant ID does not exist in the platform registry.</p>
+98:                 <button onClick={() => router.back()} className="px-6 py-2 rounded-xl admin-surface-btn admin-text font-bold">Return to Fleet</button>
+99:             </div>
+100:         );
+101:     }
+102: 
+103:     return (
+104:         <div className="p-6 lg:p-8 space-y-8 min-h-screen">
+105:             {/* Header */}
+106:             <div className="flex flex-col gap-4">
+107:                 <button onClick={() => router.back()} className="flex items-center gap-2 text-xs admin-muted hover:admin-text transition-colors w-fit">
+108:                     <ArrowLeft className="h-3.5 w-3.5" /> Back to Registry
+109:                 </button>
+110:                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+111:                     <div className="flex items-center gap-4">
+112:                         <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-700 flex items-center justify-center text-2xl font-black text-white shadow-xl shadow-violet-500/20">
+113:                             {tenant.name?.substring(0, 2).toUpperCase()}
+114:                         </div>
+115:                         <div>
+116:                             <h1 className="text-3xl font-black admin-text tracking-tight">{tenant.name}</h1>
+117:                             <div className="flex items-center gap-3 mt-1.5">
+118:                                 <span className={`text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-widest shadow-sm ${tenant.status === 'ACTIVE' ? 'bg-emerald-600 text-white' : 'bg-amber-600 text-white'}`}>
+119:                                     {tenant.status}
+120:                                 </span>
